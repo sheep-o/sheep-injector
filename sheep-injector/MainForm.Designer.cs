@@ -61,6 +61,7 @@
             this.btnInject.TabIndex = 2;
             this.btnInject.Text = "Inject";
             this.btnInject.UseVisualStyleBackColor = true;
+            this.btnInject.Click += new System.EventHandler(this.btnInject_Click);
             // 
             // label1
             // 

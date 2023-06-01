@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,8 @@ namespace sheep_injector
             InitializeComponent();
         }
 
-        private static string dllPath = string.Empty;
+        [DllImport("C:\\Users\\lol\\source\\repos\\sheep-injector\\x64\\Debug\\sheep-injector-api.dll", CallingConvention = CallingConvention.Cdecl)]
+        private extern static bool inject(int pid, string dllPath);
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
@@ -26,9 +28,7 @@ namespace sheep_injector
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    dllPath = ofd.FileName;
-
-                    listDLLs.Items.Add(new ListViewItem(new string[] { dllPath, "bleh :P" }));
+                    listDLLs.Items.Add(new ListViewItem(new string[] { ofd.FileName, "bleh :P" }));
                 }
             }
         }
@@ -58,6 +58,12 @@ namespace sheep_injector
             }
 
             tmrProcesses.Start();
+        }
+
+        private void btnInject_Click(object sender, EventArgs e)
+        {
+            Process proc = (Process)(listProcesses.SelectedItems[0].Tag);
+            inject(proc.Id, listDLLs.SelectedItems[0].Text);
         }
     }
 }
